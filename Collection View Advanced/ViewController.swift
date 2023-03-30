@@ -63,24 +63,20 @@ class ViewController: UIViewController {
                 section.orthogonalScrollingBehavior = .continuous
                 section.contentInsets.leading = 16
 
-                
-                section.boundarySupplementaryItems = [ NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: categoryHeaderID, alignment: .topLeading)]
-                
                 return section
             }
             
             else {
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(200)))
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(300)))
                 item.contentInsets.trailing = 16
                 item.contentInsets.bottom = 16
                 
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(500)), subitems: [item])
-//                group.contentInsets.leading = 16
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1000)), subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets.leading = 16
-                
-                section.boundarySupplementaryItems = [ NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: categoryHeaderID, alignment: .topLeading)]
+//                section.contentInsets.leading = 16
+                section.contentInsets = .init(top: 32, leading: 16, bottom: 0, trailing: 0
+                )
                 
                 return section
             }
@@ -97,7 +93,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        collectionView.delegate = self
+        collectionView.delegate = self
         collectionView.dataSource = self
         
         collectionView.backgroundColor = .darkGray
@@ -110,6 +106,7 @@ class ViewController: UIViewController {
         collectionView.frame = view.bounds
     }
 }
+
 
 extension ViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -127,19 +124,19 @@ extension ViewController: UICollectionViewDataSource {
             return 4
         }
         else {
-            return 5
+            return 3
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier, for: indexPath) as! HeaderCollectionReusableView
-        header.setup(head: "fskdjfdsjknfjk")
+        header.setup(head: "Categories")
         return header
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        UIEdgeInsets(top: 10, left: 100, bottom: 10, right: 10)
+//    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ViewController.cellIdentifier, for: indexPath)
@@ -147,6 +144,18 @@ extension ViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
+
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let controller = UIViewController()
+        
+        controller.view.backgroundColor = indexPath.item == 0 ? .yellow : indexPath.item == 1 ? .blue : .red
+        
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
 
 //extension ViewController: UICollectionViewDelegateFlowLayout {
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
