@@ -13,8 +13,8 @@ class HeaderCollectionReusableView: UICollectionReusableView {
     
     private let header: UILabel = {
         let label = UILabel()
-//        label.text = "Category"
         label.font = .systemFont(ofSize: 18, weight: .medium)
+//        label.text = "Category"
 //        label.backgroundColor = .darkGray
         
         return label
@@ -32,7 +32,6 @@ class HeaderCollectionReusableView: UICollectionReusableView {
     }
     
     override func layoutSubviews() {
-//        header.frame = bounds
         header.frame = bounds
     }
     

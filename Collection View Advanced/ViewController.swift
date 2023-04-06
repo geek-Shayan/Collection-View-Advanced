@@ -10,8 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     static let cellIdentifier = "cell"
-    static let categoryHeaderID = "categoryHeaderID"
-    static let categoryHeaderID2 = "categoryHeaderID2"
+    static let headerKind = "headerKind"
 //    static let headerIdentifier = "header"
     
     private let collectionView: UICollectionView = {
@@ -32,8 +31,6 @@ class ViewController: UIViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .paging
                 
-//                section.boundarySupplementaryItems = [ NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: categoryHeaderID2, alignment: .topLeading)]
-                
                 return section
             }
         
@@ -48,7 +45,7 @@ class ViewController: UIViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets.leading = 16
                 
-                section.boundarySupplementaryItems = [ NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: categoryHeaderID, alignment: .topLeading)]
+                section.boundarySupplementaryItems = [ NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: headerKind, alignment: .topLeading)]
                 
                 return section
             }
@@ -62,6 +59,8 @@ class ViewController: UIViewController {
                 let section = NSCollectionLayoutSection(group: group)
                 section.orthogonalScrollingBehavior = .continuous
                 section.contentInsets.leading = 16
+                
+                section.boundarySupplementaryItems = [ NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: headerKind, alignment: .topLeading)]
 
                 return section
             }
@@ -74,6 +73,7 @@ class ViewController: UIViewController {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(1000)), subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
+//                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
 //                section.contentInsets.leading = 16
                 section.contentInsets = .init(top: 32, leading: 16, bottom: 0, trailing: 0
                 )
@@ -84,9 +84,10 @@ class ViewController: UIViewController {
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: ViewController.cellIdentifier)
-//        collection.register(UICollectionReusableView.self, forSupplementaryViewOfKind: ViewController.categoryHeaderID, withReuseIdentifier: ViewController.headerIdentifier)
-        collection.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: ViewController.categoryHeaderID, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier)
-//        collection.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: ViewController.categoryHeaderID2, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier)
+        collection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+//        collection.register(UICollectionReusableView.self, forSupplementaryViewOfKind: ViewController.headerKind, withReuseIdentifier: ViewController.headerIdentifier)
+        collection.register(HeaderCollectionReusableView.self, forSupplementaryViewOfKind: ViewController.headerKind, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier)
+                                                                                       
         return collection
     }()
 
@@ -129,9 +130,17 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier, for: indexPath) as! HeaderCollectionReusableView
-        header.setup(head: "Categories")
-        return header
+        if indexPath.section == 1 {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier, for: indexPath) as! HeaderCollectionReusableView
+            header.setup(head: "Categories")
+            return header
+        }
+        
+        else {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionReusableView.headerIdentifier, for: indexPath) as! HeaderCollectionReusableView
+            header.setup(head: "Latest")
+            return header
+        }
     }
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -139,9 +148,36 @@ extension ViewController: UICollectionViewDataSource {
 //    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ViewController.cellIdentifier, for: indexPath)
-        cell.backgroundColor = .orange
-        return cell
+        if indexPath.section == 0 && indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+            cell.setup(with: "photo 1 s1", and: "Food")
+            return cell
+        }
+        if indexPath.section == 0 && indexPath.item == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+            cell.setup(with: "photo 2 s1", and: "Fruit")
+            return cell
+        }
+        if indexPath.section == 0 && indexPath.item == 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+            cell.setup(with: "photo 1 s1", and: "Fresh")
+            return cell
+        }
+        if indexPath.section == 1 && indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+            cell.setup(with: "burger 1 s2", and: "Burger")
+            return cell
+        }
+        if indexPath.section == 1 && indexPath.item == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+            cell.setup(with: "burger 2 s2", and: "Burger")
+            return cell
+        }
+        else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ViewController.cellIdentifier, for: indexPath)
+            cell.backgroundColor = .orange
+            return cell
+        }
     }
 }
 
