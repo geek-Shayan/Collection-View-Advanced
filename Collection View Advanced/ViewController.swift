@@ -98,7 +98,7 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         
         collectionView.backgroundColor = .darkGray
-        navigationItem.title = "TITLE"
+        navigationItem.title = "FOOD DELIVERY"
  
         view.addSubview(collectionView)
     }
@@ -163,16 +163,16 @@ extension ViewController: UICollectionViewDataSource {
             cell.setup(with: "photo 1 s1", and: "Fresh")
             return cell
         }
-        if indexPath.section == 1 && indexPath.item == 0 {
+        if indexPath.section == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
             cell.setup(with: "burger 1 s2", and: "Burger")
             return cell
         }
-        if indexPath.section == 1 && indexPath.item == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
-            cell.setup(with: "burger 2 s2", and: "Burger")
-            return cell
-        }
+//        if indexPath.section == 1 && indexPath.item == 1 {
+//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier, for: indexPath) as! CustomCollectionViewCell
+//            cell.setup(with: "burger 2 s2", and: "Burger")
+//            return cell
+//        }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ViewController.cellIdentifier, for: indexPath)
             cell.backgroundColor = .orange
