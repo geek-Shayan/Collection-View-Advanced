@@ -23,7 +23,7 @@ class HeaderCollectionReusableView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        header.backgroundColor = .brown
+//        header.backgroundColor = .opaqueSeparator
         addSubview(header)
     }
     
