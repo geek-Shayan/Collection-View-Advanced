@@ -8,12 +8,12 @@
 import UIKit
 
 class CustomCollectionViewCell: UICollectionViewCell {
-    static let identifier = "S2customCell"
+    static let identifier = "customCell"
     
     private let myImage: UIImageView = {
         let imageView = UIImageView()
-        //        imageView.image = UIImage(named: "bg 4")
-        //        imageView.backgroundColor = .systemRed
+//        imageView.image = UIImage(named: "bg 4")
+//        imageView.backgroundColor = .systemRed
 //        imageView.image = UIImage(named: "photo 1")
         imageView.tintColor = .systemMint
         imageView.contentMode = .scaleAspectFill
